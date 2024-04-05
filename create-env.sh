@@ -18,24 +18,25 @@
 # initial if statement to make sure that you pass the commandline variables via
 # the arguments.txt file
 # Fill in the blanks below
-if [ $# = 0 ]
+if [ $# ne 7 ]
 then
   echo 'You do not have enough variable in your arugments.txt, perhaps you forgot to run: bash ./create-env.sh $(< ~/arguments.txt)'
   exit 1
 else
 echo "Beginning to launch $5 EC2 instances..."
 # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/run-instances.html
-aws ec2 run-instances 
+aws ec2 run-instances --image-id $1 --count $5 --instance-type $2 --key-name $3 --security-group-ids $4 --user-dat $6 --tag-specifications 'ResourceType=instance,Tags=[{Key=Module,Value=$7}]'
 
 #https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/wait/instance-running.html
 echo "Waiting until instances are in RUNNING state..."
 
 # Collect your running instance IDS
 # https://stackoverflow.com/questions/31744316/aws-cli-filter-or-logic
-INSTANCEIDS=
+INSTANCEIDS=`aws ec2 describe-instances --query "Reservations[*].Instances[*].[InstanceId]"`
+`
 
 echo $INSTANCEIDS
-
+ 
 # Check to make sure the value is not blank and then wait for Instances to be in the
 # running state
 if [ "$INSTANCEIDS" != "" ]
