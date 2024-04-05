@@ -1,0 +1,8 @@
+ami-0b8b44ec9a8f90422
+t2.micro
+my-key-pair
+sg-0e4be45fb9b5db2fa
+3
+file://./install-env.sh
+module2-tag
+
