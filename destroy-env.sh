@@ -8,7 +8,7 @@
 echo "Beginning destroy script for module-02..."
 
 # Collect Instance IDs
-INSTANCEIDS=
+INSTANCEIDS=`aws ec2 describe-instances --query "Reservations[*].Instances[*].[InstanceId]"`
 
 echo $INSTANCEIDS
 
@@ -17,7 +17,7 @@ echo $INSTANCEIDS
 
 if [ "$INSTANCEIDS" != "" ]
   then
-    aws ec2 terminate-instances
+    aws ec2 terminate-instances $INSTANCEIDS
     echo "Waiting for all instances report state as TERMINATED..."
     aws ec2 wait instance-terminated
     echo "Finished destroying instances..."
